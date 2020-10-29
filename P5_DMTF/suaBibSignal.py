@@ -11,6 +11,25 @@ class signalMeu:
         self.freqAmostragem = 44100
         self.A = 1.5
         self.T = 2
+        self.freqs = [697, 770, 852, 941, 1209, 1336, 1477, 1633]
+        self.nums = {
+            "1" : [self.freqs[0], self.freqs[4]], 
+            "2" : [self.freqs[0], self.freqs[5]], 
+            "3" : [self.freqs[0], self.freqs[6]],
+            "A" : [self.freqs[0], self.freqs[7]],
+            "4" : [self.freqs[1], self.freqs[4]], 
+            "5" : [self.freqs[1], self.freqs[5]], 
+            "6" : [self.freqs[1], self.freqs[6]], 
+            "B" : [self.freqs[1], self.freqs[7]],
+            "7" : [self.freqs[2], self.freqs[4]], 
+            "8" : [self.freqs[2], self.freqs[5]], 
+            "9" : [self.freqs[2], self.freqs[6]],
+            "C" : [self.freqs[2], self.freqs[7]],
+            "X" : [self.freqs[3], self.freqs[4]], 
+            "0" : [self.freqs[3], self.freqs[5]],
+            "#" : [self.freqs[3], self.freqs[6]],
+            "D" : [self.freqs[3], self.freqs[7]]
+            }
 
     def generateSin(self, freq, amplitude, time, fs):
         n = time*fs
@@ -31,6 +50,7 @@ class signalMeu:
         x,y = self.calcFFT(signal, fs)
         plt.figure()
         plt.plot(x, np.abs(y))
+        plt.xlim(0, 5000)
         plt.title('Fourier')
 
     def plotSig(self, breakzin, signal):
@@ -45,34 +65,14 @@ class signalMeu:
         fs = self.freqAmostragem
         A = self.A
         T = self.T
-        freqs = [697, 770, 852, 941, 1209, 1336, 1477, 1633]
 
         freqDic = {}
 
-        for freq in freqs:
+        for freq in self.freqs:
             intervalo, freqDic[freq] = self.generateSin(freq, A, T, fs)
             dic["break"] = intervalo
-        
-        nums = {
-            "1" : [freqs[0], freqs[4]], 
-            "2" : [freqs[0], freqs[5]], 
-            "3" : [freqs[0], freqs[6]],
-            "A" : [freqs[0], freqs[7]],
-            "4" : [freqs[1], freqs[4]], 
-            "5" : [freqs[1], freqs[5]], 
-            "6" : [freqs[1], freqs[6]], 
-            "B" : [freqs[1], freqs[7]],
-            "7" : [freqs[2], freqs[4]], 
-            "8" : [freqs[2], freqs[5]], 
-            "9" : [freqs[2], freqs[6]],
-            "C" : [freqs[2], freqs[7]],
-            "X" : [freqs[3], freqs[4]], 
-            "0" : [freqs[3], freqs[5]],
-            "#" : [freqs[3], freqs[6]],
-            "D" : [freqs[3], freqs[7]]
-            }
 
-        for key, value in nums.items():
+        for key, value in self.nums.items():
             dic[key] = {
                 "full" : freqDic[value[0]] + freqDic[value[1]],
                 "f1" : freqDic[value[0]],
